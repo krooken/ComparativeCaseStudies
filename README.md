@@ -18,3 +18,4 @@ Supremica.jar, built from the latest snapshot of Supremica, is included in this 
 ```console
 foo@bar:~$ java -Xms512m -Xmx1280m -cp "Supremica.jar" org.supremica.gui.ide.IDE
 ```
+To import the Supreica models used in the case studies of the paper, click File -> Open.
