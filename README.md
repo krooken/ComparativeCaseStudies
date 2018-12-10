@@ -14,11 +14,11 @@ A simplified autonomous driving (AD) model involving two vehicles: an AD vehicle
 TuLiP and Supremica models of the AD-example are found in the AutonomousDriving folder.
 
 # Supremica
-Supremica.jar, built from the latest snapshot of Supremica, is included in this repository. To launch the Supremica IDE, simple run the following command:
+Supremica.jar, built from the latest snapshot of Supremica, is included in this repository. To launch the Supremica IDE, simply run the following command:
 ```console
 foo@bar:~$ java -Xms512m -Xmx1280m -cp "Supremica.jar" org.supremica.gui.ide.IDE
 ```
-To import the Supreica models used in the case studies of the paper, click File -> Open.
+To import the Supremica models used in the case studies of the paper, click File -> Open.
 
 # Licence
 Supremica.jar is released under the [Supremica Software License Agreement](https://github.com/krooken/ComparativeCaseStudies/blob/master/LICENCE_SUPREMICA). To other files, GNU GPLv3 applies.
