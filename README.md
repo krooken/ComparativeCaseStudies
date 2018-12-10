@@ -19,3 +19,6 @@ Supremica.jar, built from the latest snapshot of Supremica, is included in this 
 foo@bar:~$ java -Xms512m -Xmx1280m -cp "Supremica.jar" org.supremica.gui.ide.IDE
 ```
 To import the Supreica models used in the case studies of the paper, click File -> Open.
+
+# Licence
+Supremica.jar is released under the [Supremica Software License Agreement](https://github.com/krooken/ComparativeCaseStudies/blob/master/LICENCE_SUPREMICA). To other files, GNU GPLv3 applies.
