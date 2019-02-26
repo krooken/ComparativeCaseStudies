@@ -1,5 +1,5 @@
 # ComparativeCaseStudies
-[TuLiP](https://github.com/tulip-control/tulip-control) and Supremica (see below) models for the paper titled 'Comparative Case Studies of Supervisory Control and Reactive Synthesis' by Zahra Ramezani, Jonas Krook, Zhennan Fei, Martin Fabian and Knut Åkesson.
+[TuLiP](https://github.com/tulip-control/tulip-control) and Supremica (see below) models for the paper titled 'Comparative Case Studies of Reactive Synthesis and Supervisory Control' by Zahra Ramezani, Jonas Krook, Zhennan Fei, Martin Fabian and Knut Åkesson.
 
 # Stick-picking game
 The stick-picking game is a simple game frequently used to demonstrate concepts of DES and SCT. Two players take turns drawing one, two or three sticks from a pile, initially containing seven sticks. Players are not allowed to skip their turn, and the player who draws the last stick loses the game. 
