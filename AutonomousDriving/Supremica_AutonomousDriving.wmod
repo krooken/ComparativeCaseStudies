@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="windows-1252" standalone="yes"?>
 <Module Name="ad_example_1" xmlns="http://waters.sourceforge.net/xsd/module" xmlns:ns2="http://waters.sourceforge.net/xsd/base" xmlns:ns3="http://waters.sourceforge.net/xsd/des">
     <EventDeclList>
         <EventDecl Kind="PROPOSITION" Name=":accepting"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_drive_forward"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_indicate_left"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_indicate_right"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_mv_left"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_mv_right"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_drive_forward"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_indicate_left"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_indicate_right"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_mv_left"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_mv_right"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_drive_forward"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_indicate_left"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_indicate_right"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_mv_left"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_mv_right"/>
-        <EventDecl Kind="CONTROLLABLE" Name="possible_inputs"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_cancel_ind"/>
+        <EventDecl Kind="UNCONTROLLABLE" Name="possible_inputs"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_cancel_ind"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_cancel_ind"/>
-        <EventDecl Kind="CONTROLLABLE" Name="set_vlc_adv"/>
+        <EventDecl Kind="CONTROLLABLE" Name="set_vlc_ego"/>
     </EventDeclList>
     <ComponentList>
         <VariableComponent Name="lane_env">
@@ -36,7 +36,7 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="100"/>
+                    <IntConstant Value="29"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
@@ -75,7 +75,7 @@
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
-        <VariableComponent Name="lane_adv">
+        <VariableComponent Name="lane_ego">
             <VariableRange>
                 <EnumSetExpression>
                     <SimpleIdentifier Name="Left"/>
@@ -84,33 +84,33 @@
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
-                    <SimpleIdentifier Name="lane_adv"/>
+                    <SimpleIdentifier Name="lane_ego"/>
                     <SimpleIdentifier Name="Right"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
-        <VariableComponent Name="pos_adv">
+        <VariableComponent Name="pos_ego">
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="100"/>
+                    <IntConstant Value="29"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
-                    <SimpleIdentifier Name="pos_adv"/>
+                    <SimpleIdentifier Name="pos_ego"/>
                     <IntConstant Value="0"/>
                 </BinaryExpression>
             </VariableInitial>
             <VariableMarking>
                 <SimpleIdentifier Name=":accepting"/>
                 <BinaryExpression Operator="==">
-                    <SimpleIdentifier Name="pos_adv"/>
+                    <SimpleIdentifier Name="pos_ego"/>
                     <IntConstant Value="0"/>
                 </BinaryExpression>
             </VariableMarking>
         </VariableComponent>
-        <VariableComponent Name="vlc_adv">
+        <VariableComponent Name="vlc_ego">
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
@@ -119,7 +119,7 @@
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
-                    <SimpleIdentifier Name="vlc_adv"/>
+                    <SimpleIdentifier Name="vlc_ego"/>
                     <IntConstant Value="0"/>
                 </BinaryExpression>
             </VariableInitial>
@@ -128,6 +128,9 @@
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="CYCLE_BEGIN">
+                        <EventList>
+                            <SimpleIdentifier Name=":accepting"/>
+                        </EventList>
                         <PointGeometry>
                             <Point X="-122256" Y="224"/>
                         </PointGeometry>
@@ -165,76 +168,23 @@
                         <LabelBlock>
                             <SimpleIdentifier Name="possible_inputs"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-96" Y="-21"/>
+                                <Point X="-132" Y="-17"/>
                             </LabelGeometry>
                         </LabelBlock>
+                        <SplineGeometry>
+                            <Point X="-122240" Y="280"/>
+                        </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="(lane_env'==Left | lane_env'==Right) &amp; (ind_env' == None | ind_env' == Right | ind_env' == Left) &amp; (vlc_env' == 0 | vlc_env' == 1 | vlc_env' == 2)">
-                                    <BinaryExpression Operator="&amp;">
-                                        <BinaryExpression Operator="|">
-                                            <BinaryExpression Operator="==">
-                                                <UnaryExpression Operator="'">
-                                                    <SimpleIdentifier Name="lane_env"/>
-                                                </UnaryExpression>
-                                                <SimpleIdentifier Name="Left"/>
-                                            </BinaryExpression>
-                                            <BinaryExpression Operator="==">
-                                                <UnaryExpression Operator="'">
-                                                    <SimpleIdentifier Name="lane_env"/>
-                                                </UnaryExpression>
-                                                <SimpleIdentifier Name="Right"/>
-                                            </BinaryExpression>
-                                        </BinaryExpression>
-                                        <BinaryExpression Operator="|">
-                                            <BinaryExpression Operator="|">
-                                                <BinaryExpression Operator="==">
-                                                    <UnaryExpression Operator="'">
-                                                        <SimpleIdentifier Name="ind_env"/>
-                                                    </UnaryExpression>
-                                                    <SimpleIdentifier Name="None"/>
-                                                </BinaryExpression>
-                                                <BinaryExpression Operator="==">
-                                                    <UnaryExpression Operator="'">
-                                                        <SimpleIdentifier Name="ind_env"/>
-                                                    </UnaryExpression>
-                                                    <SimpleIdentifier Name="Right"/>
-                                                </BinaryExpression>
-                                            </BinaryExpression>
-                                            <BinaryExpression Operator="==">
-                                                <UnaryExpression Operator="'">
-                                                    <SimpleIdentifier Name="ind_env"/>
-                                                </UnaryExpression>
-                                                <SimpleIdentifier Name="Left"/>
-                                            </BinaryExpression>
-                                        </BinaryExpression>
-                                    </BinaryExpression>
-                                    <BinaryExpression Operator="|">
-                                        <BinaryExpression Operator="|">
-                                            <BinaryExpression Operator="==">
-                                                <UnaryExpression Operator="'">
-                                                    <SimpleIdentifier Name="vlc_env"/>
-                                                </UnaryExpression>
-                                                <IntConstant Value="0"/>
-                                            </BinaryExpression>
-                                            <BinaryExpression Operator="==">
-                                                <UnaryExpression Operator="'">
-                                                    <SimpleIdentifier Name="vlc_env"/>
-                                                </UnaryExpression>
-                                                <IntConstant Value="1"/>
-                                            </BinaryExpression>
-                                        </BinaryExpression>
-                                        <BinaryExpression Operator="==">
-                                            <UnaryExpression Operator="'">
-                                                <SimpleIdentifier Name="vlc_env"/>
-                                            </UnaryExpression>
-                                            <IntConstant Value="2"/>
-                                        </BinaryExpression>
-                                    </BinaryExpression>
+                                <BinaryExpression Operator="==" Text="vlc_env' == 2">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_env"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="2"/>
                                 </BinaryExpression>
                             </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-223" Y="87"/>
+                                <Point X="-23" Y="86"/>
                             </LabelGeometry>
                         </GuardActionBlock>
                     </Edge>
@@ -252,14 +202,14 @@
                         </LabelBlock>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % 100">
+                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % 30">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <SimpleIdentifier Name="vlc_env"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="100"/>
+                                        <IntConstant Value="30"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -270,12 +220,12 @@
                     </Edge>
                     <Edge Source="TO_REACT" Target="CYCLE_BEGIN">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-54" Y="-114"/>
                             </LabelGeometry>
@@ -285,14 +235,14 @@
                         </StartPointGeometry>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_adv = (pos_adv + vlc_adv) % 100">
-                                    <SimpleIdentifier Name="pos_adv"/>
+                                <BinaryExpression Operator="=" Text="pos_ego = (pos_ego + vlc_ego) % 30">
+                                    <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
-                                            <SimpleIdentifier Name="pos_adv"/>
-                                            <SimpleIdentifier Name="vlc_adv"/>
+                                            <SimpleIdentifier Name="pos_ego"/>
+                                            <SimpleIdentifier Name="vlc_ego"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="100"/>
+                                        <IntConstant Value="30"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -303,38 +253,115 @@
                     </Edge>
                     <Edge Source="ENV_ADV" Target="TO_REACT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="set_vlc_adv"/>
+                            <SimpleIdentifier Name="set_vlc_ego"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="6" Y="-30"/>
+                                <Point X="48" Y="-31"/>
+                            </LabelGeometry>
+                        </LabelBlock>
+                        <SplineGeometry>
+                            <Point X="-122032" Y="280"/>
+                        </SplineGeometry>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_ego"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="0"/>
+                                </BinaryExpression>
+                            </Guards>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="52" Y="8"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="CYCLE_BEGIN" Target="INPUT_SET">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="possible_inputs"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="-98" Y="-17"/>
+                            </LabelGeometry>
+                        </LabelBlock>
+                        <SplineGeometry>
+                            <Point X="-122272" Y="280"/>
+                        </SplineGeometry>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="vlc_env' == 0">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_env"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="0"/>
+                                </BinaryExpression>
+                            </Guards>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="-157" Y="85"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="CYCLE_BEGIN" Target="INPUT_SET">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="possible_inputs"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="-114" Y="-17"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="|" Text="vlc_adv'==0 | vlc_adv'==1 | vlc_adv'==2">
-                                    <BinaryExpression Operator="|">
-                                        <BinaryExpression Operator="==">
-                                            <UnaryExpression Operator="'">
-                                                <SimpleIdentifier Name="vlc_adv"/>
-                                            </UnaryExpression>
-                                            <IntConstant Value="0"/>
-                                        </BinaryExpression>
-                                        <BinaryExpression Operator="==">
-                                            <UnaryExpression Operator="'">
-                                                <SimpleIdentifier Name="vlc_adv"/>
-                                            </UnaryExpression>
-                                            <IntConstant Value="1"/>
-                                        </BinaryExpression>
-                                    </BinaryExpression>
-                                    <BinaryExpression Operator="==">
-                                        <UnaryExpression Operator="'">
-                                            <SimpleIdentifier Name="vlc_adv"/>
-                                        </UnaryExpression>
-                                        <IntConstant Value="2"/>
-                                    </BinaryExpression>
+                                <BinaryExpression Operator="==" Text="vlc_env' == 1">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_env"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="1"/>
                                 </BinaryExpression>
                             </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="7" Y="-9"/>
+                                <Point X="-92" Y="85"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="ENV_ADV" Target="TO_REACT">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="set_vlc_ego"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="14" Y="-31"/>
+                            </LabelGeometry>
+                        </LabelBlock>
+                        <SplineGeometry>
+                            <Point X="-122000" Y="280"/>
+                        </SplineGeometry>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_ego"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="2"/>
+                                </BinaryExpression>
+                            </Guards>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="180" Y="6"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="ENV_ADV" Target="TO_REACT">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="set_vlc_ego"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="30" Y="-31"/>
+                            </LabelGeometry>
+                        </LabelBlock>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="vlc_ego"/>
+                                    </UnaryExpression>
+                                    <IntConstant Value="1"/>
+                                </BinaryExpression>
+                            </Guards>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="116" Y="8"/>
                             </LabelGeometry>
                         </GuardActionBlock>
                     </Edge>
@@ -615,8 +642,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="!=" Text="lane_adv != lane_env">
-                                    <SimpleIdentifier Name="lane_adv"/>
+                                <BinaryExpression Operator="!=" Text="lane_ego != lane_env">
+                                    <SimpleIdentifier Name="lane_ego"/>
                                     <SimpleIdentifier Name="lane_env"/>
                                 </BinaryExpression>
                             </Guards>
@@ -642,10 +669,10 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_adv + 2">
+                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_ego + 2">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="+">
-                                        <SimpleIdentifier Name="pos_adv"/>
+                                        <SimpleIdentifier Name="pos_ego"/>
                                         <IntConstant Value="2"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -672,8 +699,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_adv &gt; pos_env + 2">
-                                    <SimpleIdentifier Name="pos_adv"/>
+                                <BinaryExpression Operator="&gt;" Text="pos_ego &gt; pos_env + 2">
+                                    <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="+">
                                         <SimpleIdentifier Name="pos_env"/>
                                         <IntConstant Value="2"/>
@@ -719,8 +746,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="!=" Text="lane_adv != lane_env">
-                                    <SimpleIdentifier Name="lane_adv"/>
+                                <BinaryExpression Operator="!=" Text="lane_ego != lane_env">
+                                    <SimpleIdentifier Name="lane_ego"/>
                                     <SimpleIdentifier Name="lane_env"/>
                                 </BinaryExpression>
                             </Guards>
@@ -742,8 +769,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="==" Text="lane_adv == lane_env">
-                                    <SimpleIdentifier Name="lane_adv"/>
+                                <BinaryExpression Operator="==" Text="lane_ego == lane_env">
+                                    <SimpleIdentifier Name="lane_ego"/>
                                     <SimpleIdentifier Name="lane_env"/>
                                 </BinaryExpression>
                             </Guards>
@@ -769,13 +796,13 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_env+vlc_env &gt; pos_adv + 2">
+                                <BinaryExpression Operator="&gt;" Text="pos_env+vlc_env &gt; pos_ego + 2">
                                     <BinaryExpression Operator="+">
                                         <SimpleIdentifier Name="pos_env"/>
                                         <SimpleIdentifier Name="vlc_env"/>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="+">
-                                        <SimpleIdentifier Name="pos_adv"/>
+                                        <SimpleIdentifier Name="pos_ego"/>
                                         <IntConstant Value="2"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -802,8 +829,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_adv &gt; pos_env + vlc_env + 2">
-                                    <SimpleIdentifier Name="pos_adv"/>
+                                <BinaryExpression Operator="&gt;" Text="pos_ego &gt; pos_env + vlc_env + 2">
+                                    <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="+">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -821,7 +848,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="PLANT" Name="adv_ind_behavior">
+        <SimpleComponent Kind="PLANT" Name="ego_ind_behavior">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="NONE">
@@ -855,7 +882,7 @@
                 <EdgeList>
                     <Edge Source="NONE" Target="IND_LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-34" Y="2"/>
                             </LabelGeometry>
@@ -863,7 +890,7 @@
                     </Edge>
                     <Edge Source="NONE" Target="IND_RIGHT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-59" Y="21"/>
                             </LabelGeometry>
@@ -871,7 +898,7 @@
                     </Edge>
                     <Edge Source="IND_RIGHT" Target="NONE">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-40" Y="-39"/>
                             </LabelGeometry>
@@ -882,7 +909,7 @@
                     </Edge>
                     <Edge Source="IND_LEFT" Target="NONE">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-82" Y="-28"/>
                             </LabelGeometry>
@@ -893,7 +920,7 @@
                     </Edge>
                     <Edge Source="IND_LEFT" Target="IND_RIGHT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-54" Y="5"/>
                             </LabelGeometry>
@@ -904,7 +931,7 @@
                     </Edge>
                     <Edge Source="IND_RIGHT" Target="IND_LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-41" Y="1"/>
                             </LabelGeometry>
@@ -913,7 +940,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="PLANT" Name="adv_keep_lane">
+        <SimpleComponent Kind="PLANT" Name="ego_keep_lane">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="RIGHT_OR_LEFT">
@@ -931,7 +958,7 @@
                 <EdgeList>
                     <Edge Source="RIGHT_OR_LEFT" Target="RIGHT_OR_LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-54" Y="-30"/>
                             </LabelGeometry>
@@ -943,7 +970,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="PLANT" Name="adv_change_lane">
+        <SimpleComponent Kind="PLANT" Name="ego_change_lane">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="RIGHT">
@@ -966,7 +993,7 @@
                 <EdgeList>
                     <Edge Source="RIGHT" Target="LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-36" Y="3"/>
                             </LabelGeometry>
@@ -976,14 +1003,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="vlc_adv &gt; 0 &amp; lane_adv' == Left">
+                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == Left">
                                     <BinaryExpression Operator="&gt;">
-                                        <SimpleIdentifier Name="vlc_adv"/>
+                                        <SimpleIdentifier Name="vlc_ego"/>
                                         <IntConstant Value="0"/>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="==">
                                         <UnaryExpression Operator="'">
-                                            <SimpleIdentifier Name="lane_adv"/>
+                                            <SimpleIdentifier Name="lane_ego"/>
                                         </UnaryExpression>
                                         <SimpleIdentifier Name="Left"/>
                                     </BinaryExpression>
@@ -996,7 +1023,7 @@
                     </Edge>
                     <Edge Source="LEFT" Target="RIGHT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-40" Y="-49"/>
                             </LabelGeometry>
@@ -1006,14 +1033,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="vlc_adv &gt; 0 &amp; lane_adv' == Right">
+                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == Right">
                                     <BinaryExpression Operator="&gt;">
-                                        <SimpleIdentifier Name="vlc_adv"/>
+                                        <SimpleIdentifier Name="vlc_ego"/>
                                         <IntConstant Value="0"/>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="==">
                                         <UnaryExpression Operator="'">
-                                            <SimpleIdentifier Name="lane_adv"/>
+                                            <SimpleIdentifier Name="lane_ego"/>
                                         </UnaryExpression>
                                         <SimpleIdentifier Name="Right"/>
                                     </BinaryExpression>
@@ -1027,7 +1054,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="SPEC" Name="adv_indicate">
+        <SimpleComponent Kind="SPEC" Name="ego_indicate">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="FROM">
@@ -1069,7 +1096,7 @@
                 <EdgeList>
                     <Edge Source="FROM" Target="IND_LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-42" Y="1"/>
                             </LabelGeometry>
@@ -1080,7 +1107,7 @@
                     </Edge>
                     <Edge Source="IND_LEFT" Target="FROM">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-50" Y="-21"/>
                             </LabelGeometry>
@@ -1088,7 +1115,7 @@
                     </Edge>
                     <Edge Source="IND_LEFT" Target="TO">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-53" Y="16"/>
                             </LabelGeometry>
@@ -1099,7 +1126,7 @@
                     </Edge>
                     <Edge Source="TO" Target="FROM">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-31" Y="4"/>
                             </LabelGeometry>
@@ -1107,7 +1134,7 @@
                     </Edge>
                     <Edge Source="FROM" Target="IND_RIGHT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-56" Y="2"/>
                             </LabelGeometry>
@@ -1118,7 +1145,7 @@
                     </Edge>
                     <Edge Source="IND_RIGHT" Target="FROM">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-44" Y="-18"/>
                             </LabelGeometry>
@@ -1126,7 +1153,7 @@
                     </Edge>
                     <Edge Source="IND_RIGHT" Target="TO">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-23" Y="21"/>
                             </LabelGeometry>
@@ -1138,7 +1165,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="SPEC" Name="adv_curr_dis">
+        <SimpleComponent Kind="SPEC" Name="ego_curr_dis">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="CURR">
@@ -1156,12 +1183,12 @@
                 <EdgeList>
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="23" Y="-58"/>
                             </LabelGeometry>
@@ -1171,8 +1198,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="!=" Text="lane_adv != lane_env">
-                                    <SimpleIdentifier Name="lane_adv"/>
+                                <BinaryExpression Operator="!=" Text="lane_ego != lane_env">
+                                    <SimpleIdentifier Name="lane_ego"/>
                                     <SimpleIdentifier Name="lane_env"/>
                                 </BinaryExpression>
                             </Guards>
@@ -1183,12 +1210,12 @@
                     </Edge>
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="8" Y="-20"/>
                             </LabelGeometry>
@@ -1198,10 +1225,10 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_adv + 2">
+                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_ego + 2">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="+">
-                                        <SimpleIdentifier Name="pos_adv"/>
+                                        <SimpleIdentifier Name="pos_ego"/>
                                         <IntConstant Value="2"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -1213,12 +1240,12 @@
                     </Edge>
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-121" Y="-19"/>
                             </LabelGeometry>
@@ -1228,8 +1255,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_adv &gt; pos_env + 2">
-                                    <SimpleIdentifier Name="pos_adv"/>
+                                <BinaryExpression Operator="&gt;" Text="pos_ego &gt; pos_env + 2">
+                                    <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="+">
                                         <SimpleIdentifier Name="pos_env"/>
                                         <IntConstant Value="2"/>
@@ -1244,7 +1271,7 @@
                 </EdgeList>
             </Graph>
         </SimpleComponent>
-        <SimpleComponent Kind="SPEC" Name="adv_next_dis">
+        <SimpleComponent Kind="SPEC" Name="ego_next_dis">
             <Graph>
                 <NodeList>
                     <SimpleNode Initial="true" Name="NEXT">
@@ -1262,10 +1289,10 @@
                 <EdgeList>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="5" Y="-66"/>
                             </LabelGeometry>
@@ -1287,8 +1314,8 @@
                     </Edge>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="21" Y="-33"/>
                             </LabelGeometry>
@@ -1298,8 +1325,8 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="==" Text="lane_adv == lane_env">
-                                    <SimpleIdentifier Name="lane_adv"/>
+                                <BinaryExpression Operator="==" Text="lane_ego == lane_env">
+                                    <SimpleIdentifier Name="lane_ego"/>
                                     <SimpleIdentifier Name="lane_env"/>
                                 </BinaryExpression>
                             </Guards>
@@ -1310,12 +1337,12 @@
                     </Edge>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-122" Y="-86"/>
                             </LabelGeometry>
@@ -1325,10 +1352,10 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_adv+vlc_adv &gt; pos_env + 2">
+                                <BinaryExpression Operator="&gt;" Text="pos_ego+vlc_ego&gt; pos_env + 2">
                                     <BinaryExpression Operator="+">
-                                        <SimpleIdentifier Name="pos_adv"/>
-                                        <SimpleIdentifier Name="vlc_adv"/>
+                                        <SimpleIdentifier Name="pos_ego"/>
+                                        <SimpleIdentifier Name="vlc_ego"/>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="+">
                                         <SimpleIdentifier Name="pos_env"/>
@@ -1343,12 +1370,12 @@
                     </Edge>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="adv_cancel_ind"/>
-                            <SimpleIdentifier Name="adv_drive_forward"/>
-                            <SimpleIdentifier Name="adv_indicate_left"/>
-                            <SimpleIdentifier Name="adv_indicate_right"/>
-                            <SimpleIdentifier Name="adv_mv_left"/>
-                            <SimpleIdentifier Name="adv_mv_right"/>
+                            <SimpleIdentifier Name="ego_cancel_ind"/>
+                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_indicate_left"/>
+                            <SimpleIdentifier Name="ego_indicate_right"/>
+                            <SimpleIdentifier Name="ego_mv_left"/>
+                            <SimpleIdentifier Name="ego_mv_right"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-126" Y="-41"/>
                             </LabelGeometry>
@@ -1358,12 +1385,12 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_adv + vlc_adv + 2">
+                                <BinaryExpression Operator="&gt;" Text="pos_env &gt; pos_ego + vlc_ego + 2">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="+">
                                         <BinaryExpression Operator="+">
-                                            <SimpleIdentifier Name="pos_adv"/>
-                                            <SimpleIdentifier Name="vlc_adv"/>
+                                            <SimpleIdentifier Name="pos_ego"/>
+                                            <SimpleIdentifier Name="vlc_ego"/>
                                         </BinaryExpression>
                                         <IntConstant Value="2"/>
                                     </BinaryExpression>
