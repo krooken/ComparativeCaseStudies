@@ -37,13 +37,13 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="30"/>
+                    <IntConstant Value="10"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="pos_env"/>
-                    <IntConstant Value="10"/>
+                    <IntConstant Value="4"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
@@ -93,7 +93,7 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="30"/>
+                    <IntConstant Value="10"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
@@ -202,14 +202,14 @@
                         </LabelBlock>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % 30">
+                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % 10">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <SimpleIdentifier Name="vlc_env"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="30"/>
+                                        <IntConstant Value="10"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -235,14 +235,14 @@
                         </StartPointGeometry>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_ego = (pos_ego + vlc_ego) % 30">
+                                <BinaryExpression Operator="=" Text="pos_ego = (pos_ego + vlc_ego) % 10">
                                     <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <SimpleIdentifier Name="vlc_ego"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="30"/>
+                                        <IntConstant Value="10"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -669,13 +669,13 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;30-2-1 &amp; pos_env&gt;pos_ego-30+2 &amp; pos_env+2&lt;pos_ego">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;10-2-1 &amp; pos_env&gt;pos_ego-10+2 &amp; pos_env+2&lt;pos_ego">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                     <IntConstant Value="2"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
@@ -686,7 +686,7 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_ego"/>
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
@@ -723,7 +723,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env&gt;pos_ego+2 &amp; pos_env&lt;pos_ego+30-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env&gt;pos_ego+2 &amp; pos_env&lt;pos_ego+10-2">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
@@ -742,7 +742,7 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                             </BinaryExpression>
                                             <IntConstant Value="2"/>
                                         </BinaryExpression>
@@ -750,7 +750,7 @@
                                 </BinaryExpression>
                             </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-122" Y="67"/>
+                                <Point X="-350" Y="94"/>
                             </LabelGeometry>
                         </GuardActionBlock>
                     </Edge>
@@ -771,7 +771,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;30-2&amp;(pos_env+2&lt;pos_ego | pos_env&gt;pos_ego+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;10-2&amp;(pos_env+2&lt;pos_ego | pos_env&gt;pos_ego+2)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
@@ -786,7 +786,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
@@ -898,13 +898,13 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;30-2-1 &amp; pos_env+vlc_env&gt;pos_ego-30+2 &amp; pos_env+vlc_env+2&lt;pos_ego">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;10-2-1 &amp; pos_env+vlc_env&gt;pos_ego-10+2 &amp; pos_env+vlc_env+2&lt;pos_ego">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                     <IntConstant Value="2"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
@@ -918,7 +918,7 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_ego"/>
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
@@ -958,7 +958,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env+vlc_env&gt;pos_ego+2 &amp; pos_env+vlc_env&lt;pos_ego+30-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env+vlc_env&gt;pos_ego+2 &amp; pos_env+vlc_env&lt;pos_ego+10-2">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
@@ -983,7 +983,7 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                             </BinaryExpression>
                                             <IntConstant Value="2"/>
                                         </BinaryExpression>
@@ -1012,7 +1012,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;30-2&amp;(pos_env+vlc_env+2&lt;pos_ego | pos_env+vlc_env&gt;pos_ego+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;10-2&amp;(pos_env+vlc_env+2&lt;pos_ego | pos_env+vlc_env&gt;pos_ego+2)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
@@ -1027,7 +1027,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
@@ -1441,13 +1441,13 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;30-2-1 &amp; pos_ego&gt;pos_env-30+2 &amp; pos_ego+2&lt;pos_env">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;10-2-1 &amp; pos_ego&gt;pos_env-10+2 &amp; pos_ego+2&lt;pos_env">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                     <IntConstant Value="2"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
@@ -1458,7 +1458,7 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_env"/>
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
@@ -1495,7 +1495,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego&gt;pos_env+2 &amp; pos_ego&lt;pos_env+30-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego&gt;pos_env+2 &amp; pos_ego&lt;pos_env+10-2">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1514,7 +1514,7 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                             </BinaryExpression>
                                             <IntConstant Value="2"/>
                                         </BinaryExpression>
@@ -1522,7 +1522,7 @@
                                 </BinaryExpression>
                             </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-341" Y="74"/>
+                                <Point X="-341" Y="73"/>
                             </LabelGeometry>
                         </GuardActionBlock>
                     </Edge>
@@ -1543,7 +1543,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;30-2&amp;(pos_ego+2&lt;pos_env | pos_ego&gt;pos_env+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;10-2&amp;(pos_ego+2&lt;pos_env | pos_ego&gt;pos_env+2)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1552,7 +1552,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
@@ -1664,7 +1664,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;30-2&amp;(pos_ego+vlc_ego+2&lt;pos_env | pos_ego+vlc_ego&gt;pos_env+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;10-2&amp;(pos_ego+vlc_ego+2&lt;pos_env | pos_ego+vlc_ego&gt;pos_env+2)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1673,7 +1673,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
@@ -1724,7 +1724,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego+vlc_ego&gt;pos_env+2 &amp; pos_ego+vlc_ego&lt;pos_env+30-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego+vlc_ego&gt;pos_env+2 &amp; pos_ego+vlc_ego&lt;pos_env+10-2">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1749,7 +1749,7 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="30"/>
+                                                <IntConstant Value="10"/>
                                             </BinaryExpression>
                                             <IntConstant Value="2"/>
                                         </BinaryExpression>
@@ -1778,13 +1778,13 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;30-2-1 &amp; pos_ego+vlc_ego&gt;pos_env-30+2 &amp; pos_ego+vlc_ego+2&lt;pos_env">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;10-2-1 &amp; pos_ego+vlc_ego&gt;pos_env-10+2 &amp; pos_ego+vlc_ego+2&lt;pos_env">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                     <IntConstant Value="2"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
@@ -1798,7 +1798,7 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_env"/>
-                                                    <IntConstant Value="30"/>
+                                                    <IntConstant Value="10"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="2"/>
                                             </BinaryExpression>
