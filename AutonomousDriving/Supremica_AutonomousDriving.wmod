@@ -16,7 +16,6 @@
         <EventDecl Kind="CONTROLLABLE" Name="ego_cancel_ind"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_cancel_ind"/>
         <EventDecl Kind="CONTROLLABLE" Name="set_vlc_ego"/>
-        <EventDecl Kind="CONTROLLABLE" Name="adv_drive_forward"/>
     </EventDeclList>
     <ComponentList>
         <VariableComponent Name="lane_env">
