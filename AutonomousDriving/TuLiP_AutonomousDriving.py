@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Autonomous cars example."""
+"""Autonomous Driving example."""
 from __future__ import print_function
 
 import logging
@@ -15,7 +15,7 @@ from tulip.abstract.plot import plot_partition
 # The road and vehicles parameters and values
 width_road = 1
 Safe_Distance = 2
-road_length = 100
+road_length = 30
 max_speed = 2
 
 
@@ -33,39 +33,39 @@ env_vars = {
 
     'ind_env': ["left", "right", "none"]}
 
-env_init = {'''(lane_env = "right")''', 'pos_env = 10', 'vlc_env = 0'}
+env_init = {'pos_env = 10', 'vlc_env = 0','''(lane_env = "right")'''}
 
 env_safe =  {
 
-    " (lane_adv = lane_env) | ((pos_env - pos_adv)>= -{l}) | ((pos_env - pos_adv)<= -{l}) ".format(
+    " (lane_ego = lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
-    " (lane_adv = lane_env') | ((pos_env' - pos_adv)>= -{l}) | ((pos_env' - pos_adv)<= -{l}) ".format(
+    " (lane_ego = lane_env') | ((pos_env' - pos_ego) >= {l}) | ((pos_env' - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
     '''
-    (lane_adv != lane_env  &&  (-{l} < pos_env - pos_adv | pos_env - pos_adv < {l}) -> (lane_env = lane_env'))
+    (lane_ego != lane_env  &&  (-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> (lane_env = lane_env'))
     '''.format(l=Safe_Distance),
 
     '''
-    ((lane_env' = "left" && lane_env = "right")  ->  (ind_env = "left"  && ind_env' = "none"))
+    ((lane_env = "right" && lane_env' = "left")  ->  (ind_env = "left"  && ind_env' = "none" && (vlc_env > 0)))
     ''',
 
     '''
-    ((lane_env' = "right" && lane_env = "left")  ->  (ind_env = "right" && ind_env' = "none"))
+    ((lane_env = "left" && lane_env' = "right")  ->  (ind_env = "right" && ind_env' = "none")  && (vlc_env > 0))
     ''',
 
     '''
-    ((lane_env = "left") ->  (ind_env = "right"  |  ind_env= "none"))
+    ((lane_env = "left") ->  (ind_env = "right"  |  ind_env = "none"))
     ''',
 
     '''
     ((lane_env = "right") ->  (ind_env = "left"  |  ind_env= "none"))
     ''',
 
-    "((pos_env = 99 && (vlc_env = 0 || vlc_env = 1)) || ((0 <= pos_env) && (pos_env<= 98)) )-> (pos_env' = pos_env + vlc_env)",
+    "((pos_env = 29 && (vlc_env = 0 | vlc_env = 1)) | ((0 <= pos_env) && (pos_env<= 28)) )-> (pos_env' = pos_env + vlc_env)",
    
-    "((pos_env = 99 && vlc_env = 2) || (pos_env >= 100))-> (pos_env' = (pos_env-100) + vlc_env)",
+    "((pos_env = 29 && vlc_env = 2) | (pos_env >= 30))-> (pos_env' = (pos_env-30) + vlc_env)",
 
 
     # type bounds
@@ -76,68 +76,71 @@ env_prog =  {
 
     '(vlc_env > 0)',
 
-    'pos_env = 0'}
+    'pos_env = 0'
+             }
 
 
 
-### adv_vehicle:
+### ego_vehicle:
 
 
 sys_vars = {
 
-    'lane_adv': ["left", "right"],
+    'lane_ego': ["left", "right"],
 
-    'pos_adv': (0, road_length),
+    'pos_ego': (0, road_length),
 
-    'vlc_adv': (0, max_speed),
+    'vlc_ego': (0, max_speed),
 
-    'ind_adv': ["left", "right", "none"]}
+    'ind_ego': ["left", "right", "none"]}
 
 
-sys_init = {'''(lane_adv = "right")''', 'pos_adv = 0', 'vlc_adv = 0'}
+sys_init = {'pos_ego = 0', 'vlc_ego = 0', '''(lane_ego = "right")'''}
 
 
 sys_prog = {
 
-    'ind_adv = "none" ',
+     '(vlc_ego > 0 )',
 
-    'pos_adv = {end}'.format(end=road_length)}
+     'pos_ego = 0'
+
+           }
 
 sys_safe = {
 
-    " (lane_adv = lane_env) | ((pos_env - pos_adv)>= -{l}) | ((pos_env - pos_adv)<=-{l}) ".format(
+    " (lane_ego = lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
-    " (lane_adv' = lane_env) | ((pos_env - pos_adv')>= -{l}) | ((pos_env - pos_adv')<=-{l}) ".format(
+    " (lane_ego' = lane_env) | ((pos_env - pos_ego') >= {l}) | ((pos_env - pos_ego') <= -{l}) ".format(
         l=Safe_Distance),
 
     '''
-    (lane_adv != lane_env  &&  (-{l} < pos_env - pos_adv | pos_env - pos_adv < {l}) -> (lane_adv = lane_adv'))
+    (lane_ego != lane_env  &&  (-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> (lane_ego = lane_ego'))
     '''.format(l=Safe_Distance),
    
     '''
-    ((lane_adv' = "left" && lane_adv = "right")  ->  (ind_adv = "left"  &&  ind_adv' = "none"))
+    ((lane_ego = "right" && lane_ego' = "left")  ->  (ind_ego = "left"  &&  ind_ego' = "none")  && (vlc_ego > 0))
     ''',
     
     '''
-    ((lane_adv' = "right" && lane_adv = "left")  ->  (ind_adv = "right"  && ind_adv' = "none"))
+    ((lane_ego = "left" && lane_ego' = "right")  ->  (ind_ego = "right"  && ind_ego' = "none") && (vlc_ego > 0))
     ''',
 
     '''
-    ((lane_adv = "left") ->  (ind_adv = "right"  |  ind_adv= "none"))
+    ((lane_ego = "left") ->  (ind_ego = "right"  |  ind_ego = "none"))
     ''',
 
     '''
-    ((lane_adv = "right") ->  (ind_adv = "left"  |  ind_adv= "none"))
+    ((lane_ego = "right") ->  (ind_ego = "left"  |  ind_ego = "none"))
     ''',
 
-    "((pos_adv = 99 && (vlc_adv = 0 || vlc_adv = 1)) || ((0 <= pos_adv) && (pos_adv <= 98)) )-> (pos_adv' = pos_adv + vlc_adv)",
+    "((pos_ego = 29 && (vlc_ego = 0 | vlc_ego = 1)) | ((0 <= pos_ego) && (pos_ego <= 28)) )-> (pos_ego' = pos_ego + vlc_ego)",
     
-    "((pos_adv = 99 && vlc_adv = 2) || (pos_adv >= 100))-> (pos_adv' = (pos_adv-100) + vlc_adv)",
+    "((pos_ego = 29 && vlc_ego = 2) | (pos_ego >= 30))-> (pos_ego' = (pos_ego-30) + vlc_ego)",
 
 
     # type bounds
-    " (0 <= vlc_adv  &&  vlc_adv <= {mxs})' ".format(mxs=max_speed)
+    " (0 <= vlc_ego  &&  vlc_ego <= {mxs})' ".format(mxs=max_speed)
      }
 
 
