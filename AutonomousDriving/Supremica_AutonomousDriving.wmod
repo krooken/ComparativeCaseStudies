@@ -21,15 +21,15 @@
     <ComponentList>
         <VariableComponent Name="lane_env">
             <VariableRange>
-                <EnumSetExpression Text="[Left,Right]">
-                    <SimpleIdentifier Name="Left"/>
-                    <SimpleIdentifier Name="Right"/>
-                </EnumSetExpression>
+                <BinaryExpression Operator="..">
+                    <IntConstant Value="0"/>
+                    <IntConstant Value="1"/>
+                </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="lane_env"/>
-                    <SimpleIdentifier Name="Right"/>
+                    <IntConstant Value="1"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
@@ -63,30 +63,29 @@
         </VariableComponent>
         <VariableComponent Name="ind_env">
             <VariableRange>
-                <EnumSetExpression Text="[None,Left,Right]">
-                    <SimpleIdentifier Name="None"/>
-                    <SimpleIdentifier Name="Left"/>
-                    <SimpleIdentifier Name="Right"/>
-                </EnumSetExpression>
+                <BinaryExpression Operator="..">
+                    <IntConstant Value="0"/>
+                    <IntConstant Value="2"/>
+                </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="ind_env"/>
-                    <SimpleIdentifier Name="None"/>
+                    <IntConstant Value="0"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
         <VariableComponent Name="lane_ego">
             <VariableRange>
-                <EnumSetExpression>
-                    <SimpleIdentifier Name="Left"/>
-                    <SimpleIdentifier Name="Right"/>
-                </EnumSetExpression>
+                <BinaryExpression Operator="..">
+                    <IntConstant Value="0"/>
+                    <IntConstant Value="1"/>
+                </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="lane_ego"/>
-                    <SimpleIdentifier Name="Right"/>
+                    <IntConstant Value="1"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
@@ -397,22 +396,22 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="(ind_env == None | ind_env == Right) &amp; ind_env' == Left">
+                                <BinaryExpression Operator="&amp;" Text="(ind_env == 0 | ind_env == 2) &amp; ind_env' == 1">
                                     <BinaryExpression Operator="|">
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="None"/>
+                                            <IntConstant Value="0"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="Right"/>
+                                            <IntConstant Value="2"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="==">
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="ind_env"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Left"/>
+                                        <IntConstant Value="1"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -433,22 +432,22 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="(ind_env == None | ind_env == Left) &amp; ind_env' == Right">
+                                <BinaryExpression Operator="&amp;" Text="(ind_env == 0 | ind_env == 1) &amp; ind_env' == 2">
                                     <BinaryExpression Operator="|">
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="None"/>
+                                            <IntConstant Value="0"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="Left"/>
+                                            <IntConstant Value="1"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="==">
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="ind_env"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Right"/>
+                                        <IntConstant Value="2"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -480,22 +479,22 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="(ind_env == Left | ind_env == Right) &amp; ind_env' == None">
+                                <BinaryExpression Operator="&amp;" Text="(ind_env == 1 | ind_env == 2) &amp; ind_env' == 0">
                                     <BinaryExpression Operator="|">
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="Left"/>
+                                            <IntConstant Value="1"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="==">
                                             <SimpleIdentifier Name="ind_env"/>
-                                            <SimpleIdentifier Name="Right"/>
+                                            <IntConstant Value="2"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="==">
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="ind_env"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="None"/>
+                                        <IntConstant Value="0"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -535,16 +534,16 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="lane_env==Right &amp; ind_env==Left  &amp; vlc_env &gt; 0 &amp; lane_env'==Left">
+                                <BinaryExpression Operator="&amp;" Text="lane_env==1 &amp; ind_env==1  &amp; vlc_env &gt; 0 &amp; lane_env'==0">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&amp;">
                                             <BinaryExpression Operator="==">
                                                 <SimpleIdentifier Name="lane_env"/>
-                                                <SimpleIdentifier Name="Right"/>
+                                                <IntConstant Value="1"/>
                                             </BinaryExpression>
                                             <BinaryExpression Operator="==">
                                                 <SimpleIdentifier Name="ind_env"/>
-                                                <SimpleIdentifier Name="Left"/>
+                                                <IntConstant Value="1"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
@@ -556,7 +555,7 @@
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="lane_env"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Left"/>
+                                        <IntConstant Value="0"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -577,16 +576,16 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="lane_env==Left &amp; ind_env==Right &amp; vlc_env &gt; 0 &amp; lane_env'==Right">
+                                <BinaryExpression Operator="&amp;" Text="lane_env==0 &amp; ind_env==2 &amp; vlc_env &gt; 0 &amp; lane_env'==1">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&amp;">
                                             <BinaryExpression Operator="==">
                                                 <SimpleIdentifier Name="lane_env"/>
-                                                <SimpleIdentifier Name="Left"/>
+                                                <IntConstant Value="0"/>
                                             </BinaryExpression>
                                             <BinaryExpression Operator="==">
                                                 <SimpleIdentifier Name="ind_env"/>
-                                                <SimpleIdentifier Name="Right"/>
+                                                <IntConstant Value="2"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
@@ -598,7 +597,7 @@
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="lane_env"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Right"/>
+                                        <IntConstant Value="1"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -1220,7 +1219,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == Left">
+                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == 0">
                                     <BinaryExpression Operator="&gt;">
                                         <SimpleIdentifier Name="vlc_ego"/>
                                         <IntConstant Value="0"/>
@@ -1229,7 +1228,7 @@
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="lane_ego"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Left"/>
+                                        <IntConstant Value="0"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
@@ -1250,7 +1249,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == Right">
+                                <BinaryExpression Operator="&amp;" Text="vlc_ego &gt; 0 &amp; lane_ego' == 1">
                                     <BinaryExpression Operator="&gt;">
                                         <SimpleIdentifier Name="vlc_ego"/>
                                         <IntConstant Value="0"/>
@@ -1259,7 +1258,7 @@
                                         <UnaryExpression Operator="'">
                                             <SimpleIdentifier Name="lane_ego"/>
                                         </UnaryExpression>
-                                        <SimpleIdentifier Name="Right"/>
+                                        <IntConstant Value="1"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
