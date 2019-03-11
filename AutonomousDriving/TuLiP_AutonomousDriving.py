@@ -7,9 +7,6 @@ import pickle
 
 import numpy as np
 from tulip import spec, synth, hybrid
-from polytope import box2poly
-from tulip.abstract import prop2part, discretize
-from tulip.abstract.plot import plot_partition
 
 
 # The road and vehicles parameters and values
