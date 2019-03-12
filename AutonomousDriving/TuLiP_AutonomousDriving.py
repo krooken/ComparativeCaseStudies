@@ -55,7 +55,7 @@ env_safe =  {
      
     ('''lane_env = "right" -> (ind_env = "left"  |  ind_env= "none")'''),
      
-    ('''((pos_env = 29 && (vlc_env = 0 | vlc_env = 1)) | ((0 <= pos_env) && (pos_env<= 28)) ) ->''' +
+    ('''((pos_env = 29 && (vlc_env = 0 | vlc_env = 1)) | (0 <= pos_env && pos_env<= 28) ) ->''' +
      '''pos_env' = pos_env + vlc_env'''),
      
     ('''(pos_env = 29 && vlc_env = 2 | pos_env >= 30) ->''' +
@@ -82,51 +82,50 @@ sys_vars = {
     'ind_ego': ["left", "right", "none"]}
 
 
-sys_init = {'pos_ego = 0', 'vlc_ego = 0', '''(lane_ego = "right")'''}
+sys_init = {'pos_ego = 0', 'vlc_ego = 0', '''lane_ego = "right"'''}
 
 
 sys_prog = {
 
-     '(vlc_ego > 0 )',
+     'vlc_ego > 0',
      'pos_ego = 0'
 
            }
 
 sys_safe = {
 
-    " (lane_ego != lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
-        l=Safe_Distance),
+    ("lane_ego != lane_env |" +
+     "pos_env - pos_ego >= {l} |" +
+     "pos_env - pos_ego <= -{l}")
+        .format(l=Safe_Distance),
 
-    " (lane_ego' != lane_env) | ((pos_env - pos_ego') >= {l}) | ((pos_env - pos_ego') <= -{l}) ".format(
-        l=Safe_Distance),
+    ("lane_ego' != lane_env |" +
+     "pos_env - pos_ego' >= {l} |" +
+     "pos_env - pos_ego' <= -{l} ")
+        .format(l=Safe_Distance),
 
-    '''
-    (lane_ego != lane_env  &&  (-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> (lane_ego = lane_ego'))
-    '''.format(l=Safe_Distance),
+    ("lane_ego != lane_env  &&" +
+     "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_ego = lane_ego'")
+        .format(l=Safe_Distance),
    
-    '''
-    ((lane_ego = "right" && lane_ego' = "left")  ->  (ind_ego = "left"  &&  ind_ego' = "none")  && (vlc_ego > 0))
-    ''',
+    ('''(lane_ego = "right" && lane_ego' = "left") ->''' +
+     '''(ind_ego = "left"  &&  ind_ego' = "none" && vlc_ego > 0)'''),
     
-    '''
-    ((lane_ego = "left" && lane_ego' = "right")  ->  (ind_ego = "right"  && ind_ego' = "none") && (vlc_ego > 0))
-    ''',
+    ('''(lane_ego = "left" && lane_ego' = "right") ->''' +
+     '''(ind_ego = "right"  && ind_ego' = "none" && vlc_ego > 0)'''),
 
-    '''
-    ((lane_ego = "left") ->  (ind_ego = "right"  |  ind_ego = "none"))
-    ''',
+    ('''lane_ego = "left" ->  (ind_ego = "right"  |  ind_ego = "none")'''),
 
-    '''
-    ((lane_ego = "right") ->  (ind_ego = "left"  |  ind_ego = "none"))
-    ''',
+    ('''lane_ego = "right" ->  (ind_ego = "left"  |  ind_ego = "none")'''),
 
-    "((pos_ego = 29 && (vlc_ego = 0 | vlc_ego = 1)) | ((0 <= pos_ego) && (pos_ego <= 28)) )-> (pos_ego' = pos_ego + vlc_ego)",
+    ("((pos_ego = 29 && (vlc_ego = 0 | vlc_ego = 1)) | (0 <= pos_ego && pos_ego <= 28) ) ->" +
+     "pos_ego' = pos_ego + vlc_ego"),
     
-    "((pos_ego = 29 && vlc_ego = 2) | (pos_ego >= 30))-> (pos_ego' = (pos_ego-30) + vlc_ego)",
-
+    ("(pos_ego = 29 && vlc_ego = 2 | pos_ego >= 30) ->" +
+     "pos_ego' = pos_ego-30 + vlc_ego"),
 
     # type bounds
-    " (0 <= vlc_ego  &&  vlc_ego <= {mxs})' ".format(mxs=max_speed)
+    ("(0 <= vlc_ego && vlc_ego <= {mxs})' ").format(mxs=max_speed)
      }
 
 
