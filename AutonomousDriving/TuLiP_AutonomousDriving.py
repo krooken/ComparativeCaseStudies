@@ -31,15 +31,17 @@ env_init = {'pos_env = 10', 'vlc_env = 0', '''lane_env = "right"'''}
 
 env_safe =  {
 
-    ("lane_ego != lane_env |" +
-     "pos_env - pos_ego >= {l} |" +
-     "pos_env - pos_ego <= -{l}")
-        .format(l=Safe_Distance),
+    ("lane_ego != lane_env" +
+     "| (pos_ego > {l}-1 && pos_ego < {L}-{l} && (pos_env - pos_ego > {l} | pos_env - pos_ego < -{l}))" +
+     "| (pos_ego < {l} && pos_env > pos_ego+{l} && pos_env < pos_ego+{L}-{l})" +
+     "| (pos_ego > {L}-{l}-1 && pos_env > pos_ego-{L}+{l} && pos_env+{l} < pos_ego)")
+        .format(l=Safe_Distance, L=road_length),
 
-    ("lane_ego != lane_env' |" +
-     "pos_env' - pos_ego >= {l} |" +
-     "pos_env' - pos_ego <= -{l}")
-        .format(l=Safe_Distance),
+    ("lane_ego != lane_env' " +
+     "| (pos_ego > {l}-1 && pos_ego < {L}-{l} && (pos_env' - pos_ego > {l} | pos_env' - pos_ego < -{l}))" +
+     "| (pos_ego < {l} && pos_env' > pos_ego+{l} && pos_env' < pos_ego+{L}-{l})" +
+     "| (pos_ego > {L}-{l}-1 && pos_env' > pos_ego-{L}+{l} && pos_env'+{l} < pos_ego)")
+        .format(l=Safe_Distance, L=road_length),
     
     ("lane_ego != lane_env  &&" +
      "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_env = lane_env'")
@@ -96,15 +98,17 @@ sys_prog = {
 
 sys_safe = {
 
-    ("lane_ego != lane_env |" +
-     "pos_env - pos_ego >= {l} |" +
-     "pos_env - pos_ego <= -{l}")
-        .format(l=Safe_Distance),
+    ("lane_ego != lane_env" +
+     "| (pos_env > 0 && pos_env < {L}-{l} && (pos_env - pos_ego > {l} | pos_env - pos_ego < -{l}))" +
+     "| (pos_env < {l} && pos_ego > pos_env+{l} && pos_ego < pos_env+{L}-{l})" +
+     "| (pos_env > {L}-{l}-1 && pos_ego > pos_env-{L}+{l} && pos_ego+{l} < pos_env)")
+        .format(l=Safe_Distance, L=road_length),
 
-    ("lane_ego' != lane_env |" +
-     "pos_env - pos_ego' >= {l} |" +
-     "pos_env - pos_ego' <= -{l} ")
-        .format(l=Safe_Distance),
+    ("lane_ego' != lane_env" +
+     "| (pos_env > 0 && pos_env < {L}-{l} && (pos_env - pos_ego' > {l} | pos_env - pos_ego' < -{l}))" +
+     "| (pos_env < {l} && pos_ego' > pos_env+{l} && pos_ego' < pos_env+{L}-{l})" +
+     "| (pos_env > {L}-{l}-1 && pos_ego' > pos_env-{L}+{l} && pos_ego'+{l} < pos_env)")
+        .format(l=Safe_Distance, L=road_length),
 
     ("lane_ego != lane_env  &&" +
      "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_ego = lane_ego'")
