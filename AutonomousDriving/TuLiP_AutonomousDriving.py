@@ -23,50 +23,47 @@ max_speed = 2
 env_vars = {
 
     'lane_env': ["left", "right"],
-
     'pos_env': (0, road_length),
-
     'vlc_env': (0, max_speed),
-
     'ind_env': ["left", "right", "none"]}
 
-env_init = {'pos_env = 10', 'vlc_env = 0','''(lane_env = "right")'''}
+env_init = {'pos_env = 10', 'vlc_env = 0', '''lane_env = "right"'''}
 
 env_safe =  {
 
-    " (lane_ego != lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
-        l=Safe_Distance),
+    ("lane_ego != lane_env |" +
+     "pos_env - pos_ego >= {l} |" +
+     "pos_env - pos_ego <= -{l}")
+        .format(l=Safe_Distance),
 
-    " (lane_ego != lane_env') | ((pos_env' - pos_ego) >= {l}) | ((pos_env' - pos_ego) <= -{l}) ".format(
-        l=Safe_Distance),
-
-    '''
-    (lane_ego != lane_env  &&  (-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> (lane_env = lane_env'))
-    '''.format(l=Safe_Distance),
-
-    '''
-    ((lane_env = "right" && lane_env' = "left")  ->  (ind_env = "left"  && ind_env' = "none" && (vlc_env > 0)))
-    ''',
-
-    '''
-    ((lane_env = "left" && lane_env' = "right")  ->  (ind_env = "right" && ind_env' = "none")  && (vlc_env > 0))
-    ''',
-
-    '''
-    ((lane_env = "left") ->  (ind_env = "right"  |  ind_env = "none"))
-    ''',
-
-    '''
-    ((lane_env = "right") ->  (ind_env = "left"  |  ind_env= "none"))
-    ''',
-
-    "((pos_env = 29 && (vlc_env = 0 | vlc_env = 1)) | ((0 <= pos_env) && (pos_env<= 28)) )-> (pos_env' = pos_env + vlc_env)",
-   
-    "((pos_env = 29 && vlc_env = 2) | (pos_env >= 30))-> (pos_env' = (pos_env-30) + vlc_env)",
-
+    ("lane_ego != lane_env' |" +
+     "pos_env' - pos_ego >= {l} |" +
+     "pos_env' - pos_ego <= -{l}")
+        .format(l=Safe_Distance),
+    
+    ("lane_ego != lane_env  &&" +
+     "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_env = lane_env'")
+        .format(l=Safe_Distance),
+    
+    ('''(lane_env = "right" && lane_env' = "left")  ->''' +
+     '''(ind_env = "left"  && ind_env' = "none" && (vlc_env > 0))'''),
+    
+    ('''(lane_env = "left" && lane_env' = "right")  ->''' +
+     '''(ind_env = "right" && ind_env' = "none" && vlc_env > 0)'''),
+    
+    ('''lane_env = "left" -> (ind_env = "right"  |  ind_env = "none")'''),
+     
+    ('''lane_env = "right" -> (ind_env = "left"  |  ind_env= "none")'''),
+     
+    ('''((pos_env = 29 && (vlc_env = 0 | vlc_env = 1)) | ((0 <= pos_env) && (pos_env<= 28)) ) ->''' +
+     '''pos_env' = pos_env + vlc_env'''),
+     
+    ('''(pos_env = 29 && vlc_env = 2 | pos_env >= 30) ->''' +
+     '''pos_env' = pos_env-30 + vlc_env'''),
 
     # type bounds
-    " (0 <= vlc_env  &&  vlc_env <= {mxs})' ".format(mxs=max_speed)
+    ("(0 <= vlc_env  &&  vlc_env <= {mxs})' ").format(mxs=max_speed)
+     
     }
 
 env_prog =  {
@@ -80,11 +77,8 @@ env_prog =  {
 sys_vars = {
 
     'lane_ego': ["left", "right"],
-
     'pos_ego': (0, road_length),
-
     'vlc_ego': (0, max_speed),
-
     'ind_ego': ["left", "right", "none"]}
 
 
@@ -94,7 +88,6 @@ sys_init = {'pos_ego = 0', 'vlc_ego = 0', '''(lane_ego = "right")'''}
 sys_prog = {
 
      '(vlc_ego > 0 )',
-
      'pos_ego = 0'
 
            }
