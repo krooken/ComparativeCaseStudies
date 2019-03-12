@@ -34,10 +34,10 @@ env_init = {'pos_env = 10', 'vlc_env = 0','''(lane_env = "right")'''}
 
 env_safe =  {
 
-    " (lane_ego = lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
+    " (lane_ego != lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
-    " (lane_ego = lane_env') | ((pos_env' - pos_ego) >= {l}) | ((pos_env' - pos_ego) <= -{l}) ".format(
+    " (lane_ego != lane_env') | ((pos_env' - pos_ego) >= {l}) | ((pos_env' - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
     '''
@@ -70,10 +70,6 @@ env_safe =  {
     }
 
 env_prog =  {
-
-    '(vlc_env > 0)',
-
-    'pos_env = 0'
              }
 
 
@@ -105,10 +101,10 @@ sys_prog = {
 
 sys_safe = {
 
-    " (lane_ego = lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
+    " (lane_ego != lane_env) | ((pos_env - pos_ego) >= {l}) | ((pos_env - pos_ego) <= -{l}) ".format(
         l=Safe_Distance),
 
-    " (lane_ego' = lane_env) | ((pos_env - pos_ego') >= {l}) | ((pos_env - pos_ego') <= -{l}) ".format(
+    " (lane_ego' != lane_env) | ((pos_env - pos_ego') >= {l}) | ((pos_env - pos_ego') <= -{l}) ".format(
         l=Safe_Distance),
 
     '''
