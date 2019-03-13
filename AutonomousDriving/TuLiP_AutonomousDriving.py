@@ -43,10 +43,6 @@ env_safe =  {
      "| (pos_ego > {L}-{l}-1 && pos_env' > pos_ego-{L}+{l} && pos_env'+{l} < pos_ego)")
         .format(l=Safe_Distance, L=road_length),
     
-    ("lane_ego != lane_env  &&" +
-     "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_env = lane_env'")
-        .format(l=Safe_Distance),
-    
     ('''(lane_env = "right" && lane_env' = "left")  ->''' +
      '''(ind_env = "left"  && ind_env' = "none" && vlc_env > 0)'''),
     
@@ -109,10 +105,6 @@ sys_safe = {
      "| (pos_env < {l} && pos_ego' > pos_env+{l} && pos_ego' < pos_env+{L}-{l})" +
      "| (pos_env > {L}-{l}-1 && pos_ego' > pos_env-{L}+{l} && pos_ego'+{l} < pos_env)")
         .format(l=Safe_Distance, L=road_length),
-
-    ("lane_ego != lane_env  &&" +
-     "(-{l} < pos_env - pos_ego | pos_env - pos_ego < {l}) -> lane_ego = lane_ego'")
-        .format(l=Safe_Distance),
    
     ('''(lane_ego = "right" && lane_ego' = "left") ->''' +
      '''(ind_ego = "left"  &&  ind_ego' = "none" && vlc_ego > 0)'''),
@@ -144,7 +136,7 @@ show = False
 specs = spec.GRSpec(env_vars, sys_vars, env_init, sys_init,
                     env_safe, sys_safe, env_prog, sys_prog)
 specs.qinit = '\E \A'
-specs.moore = True
+specs.moore = False
 specs.plus_one = True
 
 # @synthesize_section@
