@@ -27,7 +27,7 @@ env_vars = {
     'vlc_env': (0, max_speed),
     'ind_env': ["left", "right", "none"]}
 
-env_init = {'pos_env = 10', 'vlc_env = 0', '''lane_env = "right"'''}
+env_init = {'pos_env = 10', 'vlc_env = 0', 'lane_env = "right"'}
 
 env_safe =  {
 
@@ -48,7 +48,7 @@ env_safe =  {
         .format(l=Safe_Distance),
     
     ('''(lane_env = "right" && lane_env' = "left")  ->''' +
-     '''(ind_env = "left"  && ind_env' = "none" && (vlc_env > 0))'''),
+     '''(ind_env = "left"  && ind_env' = "none" && vlc_env > 0)'''),
     
     ('''(lane_env = "left" && lane_env' = "right")  ->''' +
      '''(ind_env = "right" && ind_env' = "none" && vlc_env > 0)'''),
@@ -86,7 +86,7 @@ sys_vars = {
     'ind_ego': ["left", "right", "none"]}
 
 
-sys_init = {'pos_ego = 0', 'vlc_ego = 0', '''lane_ego = "right"'''}
+sys_init = {'pos_ego = 0', 'vlc_ego = 0', 'lane_ego = "right"'}
 
 
 sys_prog = {
