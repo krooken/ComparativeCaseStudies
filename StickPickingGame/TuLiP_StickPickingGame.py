@@ -26,18 +26,18 @@ env_init = {
     }
 
 env_safe = {
-	# If there are remaining sticks and it is player 2's turn
-	# (s)he has to pick at least one stick.
+    # If there are remaining sticks and it is player 2's turn
+    # (s)he has to pick at least one stick.
     '(sticks > 0 && player_turn = 2) -> (player_2_picks = 1 || player_2_picks = 2 || player_2_picks = 3)',
-	
-	# If there is no sticks left, or not player 2's turn
-	# player 2 should not be picking any sticks.
+    
+    # If there is no sticks left, or not player 2's turn
+    # player 2 should not be picking any sticks.
     '(sticks = 0 || player_turn != 2) -> player_2_picks = 0',
-	
-	# Noone can pick more sticks than what is left.
+    
+    # Noone can pick more sticks than what is left.
     'player_2_picks <= sticks'
     }
-	
+    
 # System variables and guarantees
 # Formulae governing the model of player 1, and picking sticks from the stack
 
@@ -54,41 +54,41 @@ sys_init = {
     }
 
 sys_safe = {
-	# Model of player 1:
-	
-	# Same as for player 2
+    # Model of player 1:
+    
+    # Same as for player 2
     "(sticks > 0 && player_turn = 1) -> (player_1_picks = 1 || player_1_picks = 2 || player_1_picks = 3)",
-	
-	# Same as for player 2
+    
+    # Same as for player 2
     "(sticks=0 || player_turn != 1) -> player_1_picks = 0",
-	
-	# Same as for player 2
+    
+    # Same as for player 2
     "player_1_picks <= sticks",
-	
-	# Model of the game:
-	
-	# If it is player 1's turn to pick, subtract her/his choice of
-	# number of sticks from the stack.
+    
+    # Model of the game:
+    
+    # If it is player 1's turn to pick, subtract her/his choice of
+    # number of sticks from the stack.
     "player_turn = 1 -> sticks' = sticks-player_1_picks",
-	
-	# Same as previous, but for player 2.
+    
+    # Same as previous, but for player 2.
     "player_turn = 2 -> sticks' = sticks-player_2_picks",
-	
-	# The turn is alternating while the game goes on (there are sticks left).
+    
+    # The turn is alternating while the game goes on (there are sticks left).
     "sticks > 0 -> (player_turn' != player_turn)",
     
-	# Winning strategies for player 1:
-	# (Choose one of the three)
-	
-	# Player 1 shall never pick all remaining sticks.
+    # Winning strategies for player 1:
+    # (Choose one of the three)
+    
+    # Player 1 shall never pick all remaining sticks.
     #"(sticks > 0 && player_turn = 1) -> player_1_picks < sticks"
-	
-	# If the sticks are depleted during the next step,
-	# then it should be caused by player 2's turn.
+    
+    # If the sticks are depleted during the next step,
+    # then it should be caused by player 2's turn.
     #"(sticks > 0 && sticks' = 0) -> player_turn = 2"
-	
-	# If the sticks are depleted during the next step,
-	# then it should not be caused by player 1's turn.
+    
+    # If the sticks are depleted during the next step,
+    # then it should not be caused by player 1's turn.
     "(sticks > 0 && sticks' = 0) -> !(player_turn = 1)"
     }
 
