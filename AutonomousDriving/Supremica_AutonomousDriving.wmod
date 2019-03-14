@@ -8,7 +8,12 @@
         </ConstantAlias>
         <ConstantAlias Name="road_length">
             <ConstantAliasExpression>
-                <IntConstant Value="20"/>
+                <IntConstant Value="30"/>
+            </ConstantAliasExpression>
+        </ConstantAlias>
+        <ConstantAlias Name="env_init">
+            <ConstantAliasExpression>
+                <IntConstant Value="10"/>
             </ConstantAliasExpression>
         </ConstantAlias>
         <ConstantAlias Name="safety_distance">
@@ -19,17 +24,17 @@
     </ConstantAliasList>
     <EventDeclList>
         <EventDecl Kind="PROPOSITION" Name=":accepting"/>
-        <EventDecl Kind="CONTROLLABLE" Name="ego_drive_forward"/>
+        <EventDecl Kind="CONTROLLABLE" Name="ego_keep_lane"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_indicate_left"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_indicate_right"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_mv_left"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_mv_right"/>
-        <EventDecl Kind="UNCONTROLLABLE" Name="env_drive_forward"/>
+        <EventDecl Kind="UNCONTROLLABLE" Name="env_keep_lane"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_indicate_left"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_indicate_right"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_mv_left"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_mv_right"/>
-        <EventDecl Kind="UNCONTROLLABLE" Name="possible_inputs"/>
+        <EventDecl Kind="UNCONTROLLABLE" Name="set_vlc_env"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_cancel_ind"/>
         <EventDecl Kind="UNCONTROLLABLE" Name="env_cancel_ind"/>
         <EventDecl Kind="CONTROLLABLE" Name="set_vlc_ego"/>
@@ -59,7 +64,7 @@
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="pos_env"/>
-                    <IntConstant Value="10"/>
+                    <SimpleIdentifier Name="env_init"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
@@ -182,7 +187,7 @@
                 <EdgeList>
                     <Edge Source="CYCLE_BEGIN" Target="INPUT_SET">
                         <LabelBlock>
-                            <SimpleIdentifier Name="possible_inputs"/>
+                            <SimpleIdentifier Name="set_vlc_env"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-132" Y="-17"/>
                             </LabelGeometry>
@@ -206,7 +211,7 @@
                     </Edge>
                     <Edge Source="INPUT_SET" Target="ENV_ADV">
                         <LabelBlock>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_cancel_ind"/>
@@ -236,7 +241,7 @@
                     </Edge>
                     <Edge Source="TO_REACT" Target="CYCLE_BEGIN">
                         <LabelBlock>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
@@ -293,7 +298,7 @@
                     </Edge>
                     <Edge Source="CYCLE_BEGIN" Target="INPUT_SET">
                         <LabelBlock>
-                            <SimpleIdentifier Name="possible_inputs"/>
+                            <SimpleIdentifier Name="set_vlc_env"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-98" Y="-17"/>
                             </LabelGeometry>
@@ -317,7 +322,7 @@
                     </Edge>
                     <Edge Source="CYCLE_BEGIN" Target="INPUT_SET">
                         <LabelBlock>
-                            <SimpleIdentifier Name="possible_inputs"/>
+                            <SimpleIdentifier Name="set_vlc_env"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-114" Y="-17"/>
                             </LabelGeometry>
@@ -474,7 +479,7 @@
                     </Edge>
                     <Edge Source="OTHER_IND" Target="OTHER_IND">
                         <LabelBlock>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-54" Y="-21"/>
                             </LabelGeometry>
@@ -643,7 +648,7 @@
                 <EdgeList>
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_cancel_ind"/>
@@ -671,7 +676,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -725,7 +730,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -773,7 +778,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -851,7 +856,7 @@
                 <EdgeList>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_cancel_ind"/>
@@ -900,7 +905,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -960,7 +965,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -1014,7 +1019,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="env_cancel_ind"/>
-                            <SimpleIdentifier Name="env_drive_forward"/>
+                            <SimpleIdentifier Name="env_keep_lane"/>
                             <SimpleIdentifier Name="env_indicate_left"/>
                             <SimpleIdentifier Name="env_indicate_right"/>
                             <SimpleIdentifier Name="env_mv_left"/>
@@ -1187,7 +1192,7 @@
                 <EdgeList>
                     <Edge Source="RIGHT_OR_LEFT" Target="RIGHT_OR_LEFT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <LabelGeometry Anchor="NW">
                                 <Point X="-54" Y="-30"/>
                             </LabelGeometry>
@@ -1412,7 +1417,7 @@
                 <EdgeList>
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1440,7 +1445,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1494,7 +1499,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1542,7 +1547,7 @@
                     <Edge Source="CURR" Target="CURR">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1614,7 +1619,7 @@
                 <EdgeList>
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
@@ -1663,7 +1668,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1723,7 +1728,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
@@ -1777,7 +1782,7 @@
                     <Edge Source="NEXT" Target="NEXT">
                         <LabelBlock>
                             <SimpleIdentifier Name="ego_cancel_ind"/>
-                            <SimpleIdentifier Name="ego_drive_forward"/>
+                            <SimpleIdentifier Name="ego_keep_lane"/>
                             <SimpleIdentifier Name="ego_indicate_left"/>
                             <SimpleIdentifier Name="ego_indicate_right"/>
                             <SimpleIdentifier Name="ego_mv_left"/>
