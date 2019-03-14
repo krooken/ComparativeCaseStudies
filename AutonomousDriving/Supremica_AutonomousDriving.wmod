@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="windows-1252" standalone="yes"?>
 <Module Name="ad_example_1" xmlns="http://waters.sourceforge.net/xsd/module" xmlns:ns2="http://waters.sourceforge.net/xsd/base" xmlns:ns3="http://waters.sourceforge.net/xsd/des">
+    <ConstantAliasList>
+        <ConstantAlias Name="max_speed">
+            <ConstantAliasExpression>
+                <IntConstant Value="2"/>
+            </ConstantAliasExpression>
+        </ConstantAlias>
+        <ConstantAlias Name="road_length">
+            <ConstantAliasExpression>
+                <IntConstant Value="20"/>
+            </ConstantAliasExpression>
+        </ConstantAlias>
+        <ConstantAlias Name="safety_distance">
+            <ConstantAliasExpression>
+                <IntConstant Value="2"/>
+            </ConstantAliasExpression>
+        </ConstantAlias>
+    </ConstantAliasList>
     <EventDeclList>
         <EventDecl Kind="PROPOSITION" Name=":accepting"/>
         <EventDecl Kind="CONTROLLABLE" Name="ego_drive_forward"/>
@@ -36,13 +53,13 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="10"/>
+                    <SimpleIdentifier Name="road_length"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
                 <BinaryExpression Operator="==">
                     <SimpleIdentifier Name="pos_env"/>
-                    <IntConstant Value="4"/>
+                    <IntConstant Value="10"/>
                 </BinaryExpression>
             </VariableInitial>
         </VariableComponent>
@@ -50,7 +67,7 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="2"/>
+                    <SimpleIdentifier Name="max_speed"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
@@ -92,7 +109,7 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="10"/>
+                    <SimpleIdentifier Name="road_length"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
@@ -113,7 +130,7 @@
             <VariableRange>
                 <BinaryExpression Operator="..">
                     <IntConstant Value="0"/>
-                    <IntConstant Value="2"/>
+                    <SimpleIdentifier Name="max_speed"/>
                 </BinaryExpression>
             </VariableRange>
             <VariableInitial>
@@ -201,14 +218,14 @@
                         </LabelBlock>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % 10">
+                                <BinaryExpression Operator="=" Text="pos_env = (pos_env + vlc_env) % road_length">
                                     <SimpleIdentifier Name="pos_env"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <SimpleIdentifier Name="vlc_env"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="10"/>
+                                        <SimpleIdentifier Name="road_length"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -234,14 +251,14 @@
                         </StartPointGeometry>
                         <GuardActionBlock>
                             <Actions>
-                                <BinaryExpression Operator="=" Text="pos_ego = (pos_ego + vlc_ego) % 10">
+                                <BinaryExpression Operator="=" Text="pos_ego = (pos_ego + vlc_ego) % road_length">
                                     <SimpleIdentifier Name="pos_ego"/>
                                     <BinaryExpression Operator="%">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <SimpleIdentifier Name="vlc_ego"/>
                                         </BinaryExpression>
-                                        <IntConstant Value="10"/>
+                                        <SimpleIdentifier Name="road_length"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Actions>
@@ -668,14 +685,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;10-2-1 &amp; pos_env&gt;pos_ego-10+2 &amp; pos_env+2&lt;pos_ego">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;road_length-safety_distance-1 &amp; pos_env&gt;pos_ego-road_length+safety_distance &amp; pos_env+safety_distance&lt;pos_ego">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="10"/>
-                                                    <IntConstant Value="2"/>
+                                                    <SimpleIdentifier Name="road_length"/>
+                                                    <SimpleIdentifier Name="safety_distance"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
                                             </BinaryExpression>
@@ -685,23 +702,23 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_ego"/>
-                                                    <IntConstant Value="10"/>
+                                                    <SimpleIdentifier Name="road_length"/>
                                                 </BinaryExpression>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="&lt;">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_env"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <SimpleIdentifier Name="pos_ego"/>
                                     </BinaryExpression>
                                 </BinaryExpression>
                             </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="10" Y="61"/>
+                                <Point X="19" Y="69"/>
                             </LabelGeometry>
                         </GuardActionBlock>
                     </Edge>
@@ -722,17 +739,17 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env&gt;pos_ego+2 &amp; pos_env&lt;pos_ego+10-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;safety_distance &amp; pos_env&gt;pos_ego+safety_distance &amp; pos_env&lt;pos_ego+road_length-safety_distance">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -741,9 +758,9 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="10"/>
+                                                <SimpleIdentifier Name="road_length"/>
                                             </BinaryExpression>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -770,14 +787,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;10-2&amp;(pos_env+2&lt;pos_ego | pos_env&gt;pos_ego+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+safety_distance-1 &amp; pos_ego&lt;road_length-safety_distance&amp;(pos_env+safety_distance&lt;pos_ego | pos_env&gt;pos_ego+safety_distance)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="+">
                                                     <IntConstant Value="0"/>
-                                                    <IntConstant Value="2"/>
+                                                    <SimpleIdentifier Name="safety_distance"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
                                             </BinaryExpression>
@@ -785,8 +802,8 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="10"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="road_length"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -794,7 +811,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                             <SimpleIdentifier Name="pos_ego"/>
                                         </BinaryExpression>
@@ -802,7 +819,7 @@
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -897,14 +914,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;10-2-1 &amp; pos_env+vlc_env&gt;pos_ego-10+2 &amp; pos_env+vlc_env+2&lt;pos_ego">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;road_length-safety_distance-1 &amp; pos_env+vlc_env&gt;pos_ego-road_length+safety_distance &amp; pos_env+vlc_env+safety_distance&lt;pos_ego">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="10"/>
-                                                    <IntConstant Value="2"/>
+                                                    <SimpleIdentifier Name="road_length"/>
+                                                    <SimpleIdentifier Name="safety_distance"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
                                             </BinaryExpression>
@@ -917,9 +934,9 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_ego"/>
-                                                    <IntConstant Value="10"/>
+                                                    <SimpleIdentifier Name="road_length"/>
                                                 </BinaryExpression>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -929,7 +946,7 @@
                                                 <SimpleIdentifier Name="pos_env"/>
                                                 <SimpleIdentifier Name="vlc_env"/>
                                             </BinaryExpression>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <SimpleIdentifier Name="pos_ego"/>
                                     </BinaryExpression>
@@ -957,11 +974,11 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;2 &amp; pos_env+vlc_env&gt;pos_ego+2 &amp; pos_env+vlc_env&lt;pos_ego+10-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&lt;safety_distance &amp; pos_env+vlc_env&gt;pos_ego+safety_distance &amp; pos_env+vlc_env&lt;pos_ego+road_length-safety_distance">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
                                             <BinaryExpression Operator="+">
@@ -970,7 +987,7 @@
                                             </BinaryExpression>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -982,9 +999,9 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="10"/>
+                                                <SimpleIdentifier Name="road_length"/>
                                             </BinaryExpression>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -1011,23 +1028,20 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;0+2-1 &amp; pos_ego&lt;10-2&amp;(pos_env+vlc_env+2&lt;pos_ego | pos_env+vlc_env&gt;pos_ego+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_ego&gt;safety_distance-1 &amp; pos_ego&lt;road_length-safety_distance&amp;(pos_env+vlc_env+safety_distance&lt;pos_ego | pos_env+vlc_env&gt;pos_ego+safety_distance)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
-                                                <BinaryExpression Operator="+">
-                                                    <IntConstant Value="0"/>
-                                                    <IntConstant Value="2"/>
-                                                </BinaryExpression>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                                 <IntConstant Value="1"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="10"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="road_length"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1038,7 +1052,7 @@
                                                     <SimpleIdentifier Name="pos_env"/>
                                                     <SimpleIdentifier Name="vlc_env"/>
                                                 </BinaryExpression>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                             <SimpleIdentifier Name="pos_ego"/>
                                         </BinaryExpression>
@@ -1049,7 +1063,7 @@
                                             </BinaryExpression>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1440,14 +1454,14 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;10-2-1 &amp; pos_ego&gt;pos_env-10+2 &amp; pos_ego+2&lt;pos_env">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;road_length-safety_distance-1 &amp; pos_ego&gt;pos_env-road_length+safety_distance &amp; pos_ego+safety_distance&lt;pos_env">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
                                                 <BinaryExpression Operator="-">
-                                                    <IntConstant Value="10"/>
-                                                    <IntConstant Value="2"/>
+                                                    <SimpleIdentifier Name="road_length"/>
+                                                    <SimpleIdentifier Name="safety_distance"/>
                                                 </BinaryExpression>
                                                 <IntConstant Value="1"/>
                                             </BinaryExpression>
@@ -1457,16 +1471,16 @@
                                             <BinaryExpression Operator="+">
                                                 <BinaryExpression Operator="-">
                                                     <SimpleIdentifier Name="pos_env"/>
-                                                    <IntConstant Value="10"/>
+                                                    <SimpleIdentifier Name="road_length"/>
                                                 </BinaryExpression>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                     <BinaryExpression Operator="&lt;">
                                         <BinaryExpression Operator="+">
                                             <SimpleIdentifier Name="pos_ego"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <SimpleIdentifier Name="pos_env"/>
                                     </BinaryExpression>
@@ -1494,17 +1508,17 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego&gt;pos_env+2 &amp; pos_ego&lt;pos_env+10-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;safety_distance &amp; pos_ego&gt;pos_env+safety_distance &amp; pos_ego&lt;pos_env+road_length-safety_distance">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1513,9 +1527,9 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="10"/>
+                                                <SimpleIdentifier Name="road_length"/>
                                             </BinaryExpression>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                 </BinaryExpression>
@@ -1542,7 +1556,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;10-2&amp;(pos_ego+2&lt;pos_env | pos_ego&gt;pos_env+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;road_length-safety_distance&amp;(pos_ego+safety_distance&lt;pos_env | pos_ego&gt;pos_env+safety_distance)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1551,8 +1565,8 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="10"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="road_length"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1560,7 +1574,7 @@
                                         <BinaryExpression Operator="&lt;">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_ego"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                             <SimpleIdentifier Name="pos_env"/>
                                         </BinaryExpression>
@@ -1568,7 +1582,7 @@
                                             <SimpleIdentifier Name="pos_ego"/>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1663,7 +1677,7 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;10-2&amp;(pos_ego+vlc_ego+2&lt;pos_env | pos_ego+vlc_ego&gt;pos_env+2)">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&gt;0 &amp; pos_env&lt;road_length-safety_distance&amp;(pos_ego+vlc_ego+safety_distance&lt;pos_env | pos_ego+vlc_ego&gt;pos_env+safety_distance)">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&gt;">
                                             <SimpleIdentifier Name="pos_env"/>
@@ -1672,8 +1686,8 @@
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
                                             <BinaryExpression Operator="-">
-                                                <IntConstant Value="10"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="road_length"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1684,7 +1698,7 @@
                                                     <SimpleIdentifier Name="pos_ego"/>
                                                     <SimpleIdentifier Name="vlc_ego"/>
                                                 </BinaryExpression>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                             <SimpleIdentifier Name="pos_env"/>
                                         </BinaryExpression>
@@ -1695,7 +1709,7 @@
                                             </BinaryExpression>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1723,11 +1737,11 @@
                         </SplineGeometry>
                         <GuardActionBlock>
                             <Guards>
-                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;2 &amp; pos_ego+vlc_ego&gt;pos_env+2 &amp; pos_ego+vlc_ego&lt;pos_env+10-2">
+                                <BinaryExpression Operator="&amp;" Text="pos_env&lt;safety_distance &amp; pos_ego+vlc_ego&gt;pos_env+safety_distance &amp; pos_ego+vlc_ego&lt;pos_env+road_length-safety_distance">
                                     <BinaryExpression Operator="&amp;">
                                         <BinaryExpression Operator="&lt;">
                                             <SimpleIdentifier Name="pos_env"/>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                         <BinaryExpression Operator="&gt;">
                                             <BinaryExpression Operator="+">
@@ -1736,7 +1750,7 @@
                                             </BinaryExpression>
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="2"/>
+                                                <SimpleIdentifier Name="safety_distance"/>
                                             </BinaryExpression>
                                         </BinaryExpression>
                                     </BinaryExpression>
@@ -1748,9 +1762,9 @@
                                         <BinaryExpression Operator="-">
                                             <BinaryExpression Operator="+">
                                                 <SimpleIdentifier Name="pos_env"/>
-                                                <IntConstant Value="10"/>
+                                                <SimpleIdentifier Name="road_length"/>
                                             </BinaryExpression>
-                                            <IntConstant Value="2"/>
+                                            <SimpleIdentifier Name="safety_distance"/>
                                         </BinaryExpression>
                                     </BinaryExpression>
                                 </BinaryExpression>
