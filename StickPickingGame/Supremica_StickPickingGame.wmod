@@ -3,477 +3,216 @@
     <ns2:Comment>A number of players alternatingly take one, two or three sticks. The player who takes the last stick loses. If you take the first turn, can you guarantee that you will not lose? In this model, not losing is equivalent to reaching a marked state, and only your own moves are controllable. Try to synthesize a controllable and nonblocking supervisor!</ns2:Comment>
     <EventDeclList>
         <EventDecl Kind="PROPOSITION" Name=":accepting"/>
-        <EventDecl Kind="PROPOSITION" Name=":forbidden"/>
-        <EventDecl Kind="CONTROLLABLE" Name="p1:1"/>
-        <EventDecl Kind="CONTROLLABLE" Name="p1:2"/>
-        <EventDecl Kind="CONTROLLABLE" Name="p1:3"/>
-        <EventDecl Kind="UNCONTROLLABLE" Name="p2:1"/>
-        <EventDecl Kind="UNCONTROLLABLE" Name="p2:2"/>
-        <EventDecl Kind="UNCONTROLLABLE" Name="p2:3"/>
+        <EventDecl Kind="CONTROLLABLE" Name="p1"/>
+        <EventDecl Kind="UNCONTROLLABLE" Name="p2"/>
     </EventDeclList>
     <ComponentList>
-        <SimpleComponent Kind="PLANT" Name="Sticks:7">
+        <VariableComponent Name="sticks">
+            <VariableRange>
+                <BinaryExpression Operator="..">
+                    <IntConstant Value="0"/>
+                    <IntConstant Value="7"/>
+                </BinaryExpression>
+            </VariableRange>
+            <VariableInitial>
+                <BinaryExpression Operator="==" Text="sticks == 7">
+                    <SimpleIdentifier Name="sticks"/>
+                    <IntConstant Value="7"/>
+                </BinaryExpression>
+            </VariableInitial>
+            <VariableMarking>
+                <SimpleIdentifier Name=":accepting"/>
+                <BinaryExpression Operator="==">
+                    <SimpleIdentifier Name="sticks"/>
+                    <IntConstant Value="0"/>
+                </BinaryExpression>
+            </VariableMarking>
+        </VariableComponent>
+        <SimpleComponent Kind="PLANT" Name="Two_players">
             <Graph>
                 <NodeList>
-                    <SimpleNode Name="Sticks0">
+                    <SimpleNode Initial="true" Name="player1">
                         <EventList>
                             <SimpleIdentifier Name=":accepting"/>
                         </EventList>
                         <PointGeometry>
-                            <Point X="688" Y="48"/>
+                            <Point X="176" Y="400"/>
                         </PointGeometry>
                         <LabelGeometry Anchor="NW">
-                            <Point X="12" Y="-5"/>
+                            <Point X="3" Y="-23"/>
                         </LabelGeometry>
                     </SimpleNode>
-                    <SimpleNode Name="Sticks1">
+                    <SimpleNode Name="player2">
                         <PointGeometry>
-                            <Point X="576" Y="48"/>
+                            <Point X="368" Y="400"/>
                         </PointGeometry>
                         <LabelGeometry Anchor="NW">
-                            <Point X="-3" Y="-23"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Sticks2">
-                        <PointGeometry>
-                            <Point X="464" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="1" Y="6"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Sticks3">
-                        <PointGeometry>
-                            <Point X="352" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-6" Y="-28"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Sticks4">
-                        <PointGeometry>
-                            <Point X="240" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="11" Y="-15"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Sticks5">
-                        <PointGeometry>
-                            <Point X="128" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-8" Y="-24"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Sticks6">
-                        <PointGeometry>
-                            <Point X="16" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="15" Y="-17"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Initial="true" Name="Sticks7">
-                        <PointGeometry>
-                            <Point X="-64" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-12" Y="-26"/>
+                            <Point X="3" Y="6"/>
                         </LabelGeometry>
                     </SimpleNode>
                 </NodeList>
                 <EdgeList>
-                    <Edge Source="Sticks1" Target="Sticks0">
+                    <Edge Source="player1" Target="player2">
                         <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
+                            <SimpleIdentifier Name="p1"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-6" Y="-33"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Sticks2" Target="Sticks0">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="0" Y="10"/>
+                                <Point X="-23" Y="-45"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="582" Y="-23"/>
+                            <Point X="272" Y="443"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks2" Target="Sticks1">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-1">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="1"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-11" Y="-35"/>
+                                <Point X="-47" Y="-30"/>
                             </LabelGeometry>
-                        </LabelBlock>
+                        </GuardActionBlock>
                     </Edge>
-                    <Edge Source="Sticks3" Target="Sticks0">
+                    <Edge Source="player2" Target="player1">
                         <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <SimpleIdentifier Name="p2:3"/>
+                            <SimpleIdentifier Name="p2"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-9" Y="-32"/>
+                                <Point X="-26" Y="6"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="516" Y="135"/>
+                            <Point X="269" Y="350"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks3" Target="Sticks1">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-1">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="1"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-9" Y="2"/>
+                                <Point X="-45" Y="23"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="player2" Target="player1">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="p2"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="-24" Y="-33"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="456" Y="81"/>
+                            <Point X="269" Y="310"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks3" Target="Sticks2">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-2">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="2"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-11" Y="-36"/>
+                                <Point X="-45" Y="-20"/>
                             </LabelGeometry>
-                        </LabelBlock>
+                        </GuardActionBlock>
                     </Edge>
-                    <Edge Source="Sticks4" Target="Sticks1">
+                    <Edge Source="player2" Target="player1">
                         <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <SimpleIdentifier Name="p2:3"/>
+                            <SimpleIdentifier Name="p2"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-13" Y="0"/>
+                                <Point X="-23" Y="-43"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="407" Y="-60"/>
+                            <Point X="265" Y="220"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks4" Target="Sticks2">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-3">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="3"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-2" Y="-33"/>
+                                <Point X="-45" Y="-24"/>
+                            </LabelGeometry>
+                        </GuardActionBlock>
+                    </Edge>
+                    <Edge Source="player1" Target="player2">
+                        <LabelBlock>
+                            <SimpleIdentifier Name="p1"/>
+                            <LabelGeometry Anchor="NW">
+                                <Point X="-22" Y="7"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="354" Y="-8"/>
+                            <Point X="271" Y="472"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks4" Target="Sticks3">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-2">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="2"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="1" Y="-34"/>
+                                <Point X="-47" Y="19"/>
                             </LabelGeometry>
-                        </LabelBlock>
+                        </GuardActionBlock>
                     </Edge>
-                    <Edge Source="Sticks5" Target="Sticks2">
+                    <Edge Source="player1" Target="player2">
                         <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <SimpleIdentifier Name="p2:3"/>
+                            <SimpleIdentifier Name="p1"/>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-15" Y="-37"/>
+                                <Point X="-23" Y="12"/>
                             </LabelGeometry>
                         </LabelBlock>
                         <SplineGeometry>
-                            <Point X="289" Y="137"/>
+                            <Point X="272" Y="558"/>
                         </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks5" Target="Sticks3">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
+                        <GuardActionBlock>
+                            <Guards>
+                                <BinaryExpression Operator="==" Text="sticks' == sticks-3">
+                                    <UnaryExpression Operator="'">
+                                        <SimpleIdentifier Name="sticks"/>
+                                    </UnaryExpression>
+                                    <BinaryExpression Operator="-">
+                                        <SimpleIdentifier Name="sticks"/>
+                                        <IntConstant Value="3"/>
+                                    </BinaryExpression>
+                                </BinaryExpression>
+                            </Guards>
                             <LabelGeometry Anchor="NW">
-                                <Point X="-13" Y="-1"/>
+                                <Point X="-48" Y="24"/>
                             </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="241" Y="83"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks5" Target="Sticks4">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-7" Y="-33"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Sticks6" Target="Sticks3">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <SimpleIdentifier Name="p2:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-15" Y="0"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="177" Y="-64"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks6" Target="Sticks4">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-12" Y="-34"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="126" Y="-12"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks6" Target="Sticks5">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="7" Y="-38"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Sticks7" Target="Sticks4">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <SimpleIdentifier Name="p2:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-13" Y="-37"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="81" Y="135"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks7" Target="Sticks5">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p2:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-15" Y="-34"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="16" Y="89"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Sticks7" Target="Sticks6">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-5" Y="-32"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                </EdgeList>
-            </Graph>
-        </SimpleComponent>
-        <SimpleComponent Kind="PLANT" Name="Players:2">
-            <Graph>
-                <NodeList>
-                    <SimpleNode Initial="true" Name="Player1Turn">
-                        <EventList>
-                            <SimpleIdentifier Name=":accepting"/>
-                        </EventList>
-                        <PointGeometry>
-                            <Point X="48" Y="64"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-55" Y="14"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player2Turn">
-                        <PointGeometry>
-                            <Point X="240" Y="64"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-14" Y="15"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                </NodeList>
-                <EdgeList>
-                    <Edge Source="Player1Turn" Target="Player2Turn">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-43" Y="12"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="141" Y="12"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Player2Turn" Target="Player1Turn">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <SimpleIdentifier Name="p2:2"/>
-                            <SimpleIdentifier Name="p2:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="7" Y="-54"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="142" Y="94"/>
-                        </SplineGeometry>
-                    </Edge>
-                </EdgeList>
-            </Graph>
-        </SimpleComponent>
-        <SimpleComponent Kind="SUPERVISOR" Name="Supervisor">
-            <Graph>
-                <NodeList>
-                    <SimpleNode Name="Player1Turn.Sticks0">
-                        <EventList>
-                            <SimpleIdentifier Name=":accepting"/>
-                        </EventList>
-                        <PointGeometry>
-                            <Point X="464" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-53" Y="10"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player1Turn.Sticks2">
-                        <PointGeometry>
-                            <Point X="272" Y="-16"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-61" Y="-24"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player1Turn.Sticks3">
-                        <PointGeometry>
-                            <Point X="272" Y="112"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-56" Y="10"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player1Turn.Sticks4">
-                        <PointGeometry>
-                            <Point X="272" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-54" Y="-25"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Initial="true" Name="Player1Turn.Sticks7">
-                        <PointGeometry>
-                            <Point X="80" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-58" Y="8"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player2Turn.Sticks1">
-                        <PointGeometry>
-                            <Point X="368" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-5" Y="-31"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                    <SimpleNode Name="Player2Turn.Sticks5">
-                        <PointGeometry>
-                            <Point X="176" Y="48"/>
-                        </PointGeometry>
-                        <LabelGeometry Anchor="NW">
-                            <Point X="-106" Y="-30"/>
-                        </LabelGeometry>
-                    </SimpleNode>
-                </NodeList>
-                <EdgeList>
-                    <Edge Source="Player1Turn.Sticks2" Target="Player2Turn.Sticks1">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="7" Y="-13"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="324" Y="6"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Player1Turn.Sticks3" Target="Player2Turn.Sticks1">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="8" Y="-4"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="324" Y="90"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Player1Turn.Sticks4" Target="Player2Turn.Sticks1">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-18" Y="3"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Player1Turn.Sticks7" Target="Player2Turn.Sticks5">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p1:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="7" Y="5"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Player2Turn.Sticks1" Target="Player1Turn.Sticks0">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-41" Y="5"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                    </Edge>
-                    <Edge Source="Player2Turn.Sticks5" Target="Player1Turn.Sticks2">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p2:3"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-40" Y="-14"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="220" Y="6"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Player2Turn.Sticks5" Target="Player1Turn.Sticks3">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p2:2"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-39" Y="-6"/>
-                            </LabelGeometry>
-                        </LabelBlock>
-                        <SplineGeometry>
-                            <Point X="220" Y="90"/>
-                        </SplineGeometry>
-                    </Edge>
-                    <Edge Source="Player2Turn.Sticks5" Target="Player1Turn.Sticks4">
-                        <LabelBlock>
-                            <SimpleIdentifier Name="p2:1"/>
-                            <LabelGeometry Anchor="NW">
-                                <Point X="-15" Y="3"/>
-                            </LabelGeometry>
-                        </LabelBlock>
+                        </GuardActionBlock>
                     </Edge>
                 </EdgeList>
             </Graph>
