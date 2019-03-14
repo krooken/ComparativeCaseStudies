@@ -25,8 +25,8 @@ env_init = {
     }
 
 env_safe = {
-    '(sticks > 0 && player_turn=2) -> (player_2_picks = 1 || player_2_picks = 2 || player_2_picks = 3)',
-    '(sticks = 0 || player_turn!=2) -> player_2_picks=0',
+    '(sticks > 0 && player_turn = 2) -> (player_2_picks = 1 || player_2_picks = 2 || player_2_picks = 3)',
+    '(sticks = 0 || player_turn != 2) -> player_2_picks = 0',
     'player_2_picks <= sticks'
     }
 
@@ -37,21 +37,22 @@ sys_vars = {
     }
 
 sys_init = {
-    'player_turn=1',
+    'player_turn = 1',
     'sticks = {sticks}'.format(sticks=sticks),
     'player_1_picks = 1 || player_1_picks = 2 || player_1_picks = 3'
     }
 
 sys_safe = {
-    "sticks>0 -> (player_turn' != player_turn)",
-    "sticks=0 -> (player_turn' = player_turn)",
-    '(sticks>0 && player_turn=1) -> (player_1_picks = 1 || player_1_picks = 2 || player_1_picks = 3)',
-    '(sticks=0 || player_turn!=1) -> player_1_picks=0',
+    "sticks > 0 -> (player_turn' != player_turn)",
+    '(sticks > 0 && player_turn = 1) -> (player_1_picks = 1 || player_1_picks = 2 || player_1_picks = 3)',
+    '(sticks=0 || player_turn != 1) -> player_1_picks = 0',
     'player_1_picks <= sticks',
-    "(sticks>0 && player_turn=1) -> sticks'=sticks-player_1_picks",
-    "(sticks>0 && player_turn=2) -> sticks'=sticks-player_2_picks",
-    "sticks=0 -> sticks'=0",
-    '(sticks>0 && player_turn=1) -> player_1_picks<sticks'
+    "player_turn = 1 -> sticks' = sticks-player_1_picks",
+    "player_turn = 2 -> sticks' = sticks-player_2_picks",
+    
+    #"(sticks > 0 && player_turn = 1) -> player_1_picks < sticks"
+    #"(sticks > 0 && sticks' = 0) -> player_turn = 2"
+    #"(sticks > 0 && sticks' = 0) -> !(player_turn = 1)"
     }
 
 
@@ -113,7 +114,7 @@ mealy.save('two_players_strict_init.eps')
 # Player one will force player two into a situation where one stick is left.
 # However, player two cannot do anything. (S)he has to select sticks, but this
 # conflicts with this new specification.
-env_safe |= {'(sticks>0 && player_turn=2) -> player_2_picks<sticks'}
+env_safe |= {'(sticks > 0 && player_turn = 2) -> player_2_picks < sticks'}
 
 # Create the specification
 specs = spec.GRSpec(env_vars, sys_vars, env_init, sys_init,
