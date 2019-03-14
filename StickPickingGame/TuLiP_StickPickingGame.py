@@ -137,13 +137,13 @@ ctrl = synth._trim_strategy(strategy, specs, rm_deadends=True)
 assert ctrl is not None, 'unrealizable'
 
 full_mealy = synth.strategy2mealy(strategy, specs)
-full_mealy.save('two_players_all_transitions.eps')
+full_mealy.save('two_players_all_transitions.pdf')
 
 # Use custom code to create Mealy machine. The initial transitions will only be
 # created to states that fullfill both env_init and sys_init.
 mealy = utils.strategy2mealy(strategy, specs)
 mealy.remove_deadends()
-mealy.save('two_players_strict_init.eps')
+mealy.save('two_players_strict_init.pdf')
 
 
 # Showing how to construct a valid strategy by falsifying assumptions.
@@ -169,7 +169,7 @@ strategy = synth.omega_int.synthesize_enumerated_streett(specs, use_cudd=False)
 
 # And here is the automaton before any triming has taken place.
 full_mealy = synth.strategy2mealy(strategy, specs)
-full_mealy.save('two_players_falsified_all_transitions.eps')
+full_mealy.save('two_players_falsified_all_transitions.pdf')
 
 # Here TuLiP fails when it tries to trim the strategy
 ctrl = synth.synthesize(specs, ignore_sys_init=False, ignore_env_init=False)
